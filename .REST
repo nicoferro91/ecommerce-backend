@@ -12,9 +12,12 @@
 # Content-Type: application/json
 
 # {
-#     "title": "Producto actualizado 123",
-#     "price": 123,
-#     "thumbnail": "foto actualizada 123"
+#     "title": "Producto actualizado 1",
+#     "price": 1000,
+#     "thumbnail": "foto actualizada 1",
+#     "descripcion": "pequeña descripcion del producto",
+#     "codigo": "00-12-34",
+#     "stock": 10
 # }
 
 // Agregar un producto
@@ -25,7 +28,10 @@
 # {
 #     "title": "Producto nuevo b",
 #     "price": 3456,
-#     "thumbnail": "foto nueva"
+#     "thumbnail": "foto nueva",
+#     "descripcion": "pequeña descripcion del producto",
+#     "codigo": "00-12-34",
+#     "stock": 10
 # }
 
 // Borrar por producto por id

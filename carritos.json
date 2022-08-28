@@ -2,16 +2,12 @@
   {
     "id": 1,
     "timestamp": 1661464986560,
-    "productos": [
-      "aaaa"
-    ]
+    "productos": []
   },
   {
     "id": 2,
     "timestamp": 1661464987357,
-    "productos": [
-      "bbbb"
-    ]
+    "productos": []
   },
   {
     "id": 3,
@@ -22,6 +18,9 @@
         "price": 3000,
         "thumbnail": "https://cdn1.iconfinder.com/data/icons/fashion-icons-1/48/night_dress-128.png",
         "id": 3,
+        "descripcion": "pequeña descripcion del producto",
+        "codigo": "00-12-34",
+        "stock": 10,
         "timestamp": 1661650739960
       },
       {
@@ -29,6 +28,9 @@
         "price": 1000,
         "thumbnail": "https://cdn1.iconfinder.com/data/icons/fashion-icons-1/48/pullover-128.png",
         "id": 1,
+        "descripcion": "pequeña descripcion del producto",
+        "codigo": "00-12-34",
+        "stock": 10,
         "timestamp": 1661652478525
       }
     ]
@@ -47,6 +49,9 @@
         "price": 2000,
         "thumbnail": "https://cdn1.iconfinder.com/data/icons/fashion-icons-1/48/t-shirt-128.png",
         "id": 2,
+        "descripcion": "pequeña descripcion del producto",
+        "codigo": "00-12-34",
+        "stock": 10,
         "timestamp": 1661664240726
       },
       {
@@ -54,6 +59,9 @@
         "price": 2000,
         "thumbnail": "https://cdn1.iconfinder.com/data/icons/fashion-icons-1/48/t-shirt-128.png",
         "id": 2,
+        "descripcion": "pequeña descripcion del producto",
+        "codigo": "00-12-34",
+        "stock": 10,
         "timestamp": 1661664247925
       }
     ]
