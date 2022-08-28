@@ -106,7 +106,12 @@ routerCarrito.post("/:id/productos/:id_prod", async (req, res)=>{
 
 // Borrar un producto del carrito usando ambos id's
 routerCarrito.delete("/:id/productos/:id_prod", async (req, res)=>{
-
+    const url = req.params
+    const idCart = parseInt(url.id.slice(1))
+    const idProd = parseInt(url.id_prod.slice(1))
+    const carrito = new Carrito("./carritos.json")
+    const respuesta = await carrito.deleteFromCart(idCart, idProd)
+    res.json({respuesta})
 })
 
 // Listar productos en un carrito segun su id
