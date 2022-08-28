@@ -116,5 +116,9 @@ routerCarrito.delete("/:id/productos/:id_prod", async (req, res)=>{
 
 // Listar productos en un carrito segun su id
 routerCarrito.get("/:id/productos", async (req, res)=>{
-
+    const url = req.params
+    const idCart = parseInt(url.id.slice(1))
+    const carrito = new Carrito("./carritos.json")
+    const respuesta = await carrito.listCartProducts(idCart)
+    res.json({respuesta})
 })

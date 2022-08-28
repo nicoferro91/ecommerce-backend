@@ -94,9 +94,18 @@ class Carrito {
         }
     }
     // Listar productos en un carrito segun su id
-    async listCartProducts(){
+    async listCartProducts(idCart){
         try {
-            
+            let carts = await fs.promises.readFile(this.route, "utf8")
+            let cartsParse = JSON.parse(carts)
+            const cartIndex = cartsParse.findIndex(cart => cart.id === idCart)
+            if(cartIndex !== -1) {
+                const products = cartsParse[cartIndex].productos
+                return products
+            }
+            else {
+                return { msg: `Carrito id: ${idCart} no existe`}
+            }
         } catch (error) {
             console.log(error)
             
