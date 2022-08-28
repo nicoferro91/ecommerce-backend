@@ -10,9 +10,9 @@ class Contenedor {
             let data = await fs.promises.readFile(this.route, "utf8")
             let dataParse = JSON.parse(data)
             if (dataParse.length) {
-                return Promise.resolve(dataParse)
+                return {dataParse}
             } else {
-                console.log("No hay productos")
+                return { msg: `No hay productos`}
             }
         } catch (error) {
             console.log(error)
@@ -20,16 +20,17 @@ class Contenedor {
     }
 
     // Devolver un producto por id
-    async getById(id) {
+    async getById(idProd) {
         try {
             let data = await fs.promises.readFile(this.route, "utf8")
             let dataParse = JSON.parse(data)
-            id = parseInt(id)
-            let product = dataParse.find(product => product.id === id)
-            if (product) {
+            const productIndex = dataParse.findIndex(prod => prod.id === idProd)
+            if(productIndex !== -1) {
+                const product = dataParse[productIndex]
                 return product
-            } else {
-                return null
+            }
+            else {
+                return { msg: `Producto id: ${idProd} no encontrado`}
             }
         } catch (error) {
             console.log(error)

@@ -39,8 +39,7 @@ routerProductos.get("/", async (req,res)=>{
 // Devolver un producto por id
 routerProductos.get("/:id", async (req,res)=>{
     let {id} = req.params
-    id = id.slice(1)
-    id = parseInt(id)
+    id = parseInt(id.slice(1))
     const contenedor = new Contenedor("./productos.json")
     const respuesta = await contenedor.getById(id)
     res.json({respuesta})
@@ -75,8 +74,15 @@ routerProductos.delete("/:id", async (req,res)=>{
     res.json({respuesta})
 })
 
-// Carrito:
+// 404 en productos
+routerProductos.get("*", async (req,res)=>{
+    res.json({
+		error: -2,
+		description: "Ruta no implementada"
+	});
+})
 
+// ---- Carrito: ---- //
 // Crear carrito y devolver su id
 routerCarrito.post("/", async (req, res)=>{
     const carrito = new Carrito("./carritos.json")
@@ -121,4 +127,12 @@ routerCarrito.get("/:id/productos", async (req, res)=>{
     const carrito = new Carrito("./carritos.json")
     const respuesta = await carrito.listCartProducts(idCart)
     res.json({respuesta})
+})
+
+// 404 en carrito
+routerCarrito.get("*", async (req,res)=>{
+    res.json({
+		error: -2,
+		description: "Ruta no implementada"
+	});
 })
