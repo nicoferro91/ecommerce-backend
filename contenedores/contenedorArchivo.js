@@ -1,6 +1,6 @@
 const fs = require("fs")
 
-class Contenedor {
+class ContenedorArchivo {
     constructor(route) {
         this.route = route
     }
@@ -111,4 +111,4 @@ class Contenedor {
         }
     }
 }
-module.exports = Contenedor
+module.exports = ContenedorArchivo
