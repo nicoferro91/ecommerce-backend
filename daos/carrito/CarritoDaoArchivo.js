@@ -1,11 +1,9 @@
-const { Contenedor } = require("../../contenedores/contenedorArchivo")
+const  ContenedorArchivo  = require("../../contenedores/contenedorArchivo")
 
-class CarritoDaoArchivo extends Contenedor {
+class CarritoDaoArchivo extends ContenedorArchivo {
 	constructor() {
 		super("../../data/carritos.json")
 	}
-	//Metodos particulares de Carrito
-	
 }
 
 module.exports = CarritoDaoArchivo

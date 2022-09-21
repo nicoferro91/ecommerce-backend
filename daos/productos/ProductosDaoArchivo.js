@@ -1,8 +1,8 @@
-const { Contenedor } = require("../../contenedores/contenedorArchivo")
+const  Contenedor  = require("../../contenedores/contenedorArchivo")
 
 class ProductosDaoArchivo extends Contenedor {
 	constructor() {
-		super("../../data/productos.json")
+		super("./data/productos.json")
 	}
 	//Metodos particulares de productos
 	

@@ -7,9 +7,7 @@ adminFirebase.initializeApp({
   credential: adminFirebase.credential.cert(serviceAccount)
 });
 
-
-const Contenedor = require("./contenedores/contenedorArchivo");
-const Carrito = require("./carrito")
+const { Carrito, Productos } = require("./daos/index.js")
 
 const express = require("express")
 const { Router } = express
@@ -41,7 +39,7 @@ app.listen(PORT, () =>{
 
 // Devolver todos los productos
 routerProductos.get("/", async (req,res)=>{
-    const contenedor = new Contenedor("./data/productos.json")
+    const contenedor = new Productos("./data/productos.json")
     const respuesta = await contenedor.getAll()
     res.json({respuesta})
 })
@@ -50,7 +48,7 @@ routerProductos.get("/", async (req,res)=>{
 routerProductos.get("/:id", async (req,res)=>{
     let {id} = req.params
     id = parseInt(id.slice(1))
-    const contenedor = new Contenedor("./data/productos.json")
+    const contenedor = new Productos("./data/productos.json")
     const respuesta = await contenedor.getById(id)
     res.json({respuesta})
 })
@@ -61,14 +59,14 @@ routerProductos.put("/:id", async(req, res)=>{
     id = id.slice(1)
     id = parseInt(id)
     const objProducto = req.body
-    const contenedor = new Contenedor("./data/productos.json")
+    const contenedor = new Productos("./data/productos.json")
     const respuesta = await contenedor.updateById(objProducto, id, admin)
     res.json({respuesta})
 } )
 
 // Agregar un producto
 routerProductos.post("/", async (req, res)=>{
-    const contenedor = new Contenedor("./data/productos.json")
+    const contenedor = new Productos("./data/productos.json")
     const objProducto = req.body
     const respuesta = await contenedor.save(objProducto, admin)
     res.json({respuesta})
@@ -79,7 +77,7 @@ routerProductos.delete("/:id", async (req,res)=>{
     let {id} = req.params
     id = id.slice(1)
     id = parseInt(id)
-    const contenedor = new Contenedor("./data/productos.json")
+    const contenedor = new Productos("./data/productos.json")
     const respuesta = await contenedor.deleteById(id, admin)
     res.json({respuesta})
 })

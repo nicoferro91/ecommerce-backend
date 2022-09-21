@@ -1,7 +1,7 @@
 const Contenedor = require("../../contenedores/contenedorMongodb.js")
 const mongoose = require("mongoose")
-const { mongoConnect } = require("../../mongoDB/connection.js")
 
+const url = "mongodb://localhost:27017/ecommerce"
 const productosCollection = "productos"
 
 const ProductosSchema = new mongoose.Schema({
@@ -9,13 +9,13 @@ const ProductosSchema = new mongoose.Schema({
 	thumbnail: { type: String, require: true },
 	price: { type: Number, require: true },
 	stock: { type: Number, require: true }
-});
+})
 
 const productos = mongoose.model(productosCollection, ProductosSchema)
 
 class ProductosDaoMongodb extends Contenedor {
 	constructor() {
-		super(mongoConnect, productos)
+		super(url, productos)
 	}
 }
 

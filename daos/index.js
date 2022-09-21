@@ -4,21 +4,21 @@ const CarritoDaoArchivo = require("./carrito/CarritoDaoArchivo.js");
 const CarritoDaoFirebase = require("./carrito/CarritoDaoFirebase.js");
 const CarritoDaoMongoDB = require("./carrito/CarritoDaoMongoDB.js");
 
-const ProductoDaoArchivo = require("./productos/ProductoDaoArchivo.js");
-const ProductoDaoMongoDB = require("./productos/ProductoDaoMongoDB.js");
-const ProductoDaoFirebase = require("./productos/ProductoDaoFirebase.js");
+const ProductosDaoArchivo = require("./productos/ProductosDaoArchivo.js");
+const ProductosDaoMongoDB = require("./productos/ProductosDaoMongoDB.js");
+const ProductosDaoFirebase = require("./productos/ProductosDaoFirebase.js");
 
 // Exportamos segun la variable DAO del .env
 
 if (process.env.DAO === "fs") {
 	exports.Carrito = CarritoDaoArchivo
-	exports.Producto = ProductoDaoArchivo
+	exports.Productos = ProductosDaoArchivo
 } else if (process.env.DAO === "mongo") {
 	exports.Carrito = CarritoDaoMongoDB
-	exports.Producto = ProductoDaoMongoDB
+	exports.Productos = ProductosDaoMongoDB
 } else if (process.env.DAO === "firebase") {
 	exports.Carrito = CarritoDaoFirebase
-	exports.Producto = ProductoDaoFirebase
+	exports.Productos = ProductosDaoFirebase
 } else {
 	console.log("Error al elegir sistema de datos")
 }

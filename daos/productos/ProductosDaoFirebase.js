@@ -1,8 +1,8 @@
-const { Contenedor } = require("../../contenedores/contenedorFirebase")
+const  Contenedor  = require("../../contenedores/contenedorFirebase")
 
 class ProductosDaoFirebase extends Contenedor {
 	constructor() {
-		super("../../data/productos.json")
+		super("./data/productos.json")
 	}
 }
 
