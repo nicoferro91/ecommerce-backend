@@ -37,7 +37,6 @@ class ContenedorMongoDB {
 			return newData;
 		} catch (error) {
 			return `No se pudo traer producto ${id}. ${error}`;
-		} finally {
 		}
 	}
 
@@ -58,7 +57,6 @@ class ContenedorMongoDB {
 			return guardar._id.toString();
 		} catch (error) {
 			console.log(`Error al guardar: ${error}`);
-		} finally {
 		}
 	}
 
@@ -69,10 +67,8 @@ class ContenedorMongoDB {
 			return data;
 		} catch (error) {
 			console.log(`Error al eliminar: ${error}`);
-		} finally {
 		}
 	}
-
 }
 
 module.exports = ContenedorMongoDB;

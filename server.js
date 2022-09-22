@@ -1,12 +1,3 @@
-// Firebase
-const adminFirebase = require("firebase-admin");
-
-const serviceAccount = require("./db/ecommerce-backend-8bbf1-firebase-adminsdk-80ph9-1bf3dbee18.json");
-
-adminFirebase.initializeApp({
-  credential: adminFirebase.credential.cert(serviceAccount)
-});
-
 const { Carrito, Productos } = require("./daos/index.js")
 
 const express = require("express")
