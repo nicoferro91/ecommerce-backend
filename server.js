@@ -1,137 +1,188 @@
-const { Carrito, Productos } = require("./daos/index.js")
-
 const express = require("express")
-const { Router } = express
+require("dotenv").config()
+const handlebars = require("express-handlebars")
+const MongoStore = require("connect-mongo")
+const session = require("express-session")
+const cp = require("cookie-parser")
 
-const app = express()
-const PORT = 8080
-const routerProductos = Router()
-const routerCarrito = Router()
+const { argv, platform, version, memoryUsage, cwd, pid, execPath } = process
+const { fork } = require("child_process")
+const calculoPesado = require("./utils/calculo")
 
-// Seteo de administrador, se chequea dentro de contenedor
-const admin = true
+const app = express();
 
-// Funciones middleware
+// --- WEBSOCKET
+const { Server: HttpServer } = require("http")
+const { Server: IoServer } = require("socket.io")
+const httpServer = new HttpServer(app)
+const io = new IoServer(httpServer)
+
+// --- middleware ----------------
+app.use(cp())
+const { generadorProductos } = require("./utils/generadorProducto")
+const checkAuthentication = require("./utils/checkAuthentication")
+const passport = require("./utils/passportMiddleware")
+
 app.use(express.json())
-app.use(express.urlencoded({ extended:true }))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static("public"))
 
-app.use("/api/productos", routerProductos)
+const PORT = process.env.PORT;
 
-app.use("/api/carrito", routerCarrito)
+// meter productosRandom en la base datos, en la colección productos
+const productosRandoms = generadorProductos()
+const { Carrito, Producto, Login, Chat } = require("./daos/index.js")
 
-app.get("/", (req,res) =>{
-    res.send("hola mundo")
+// --- Creación de objetos con DAOS ----------------
+const Carritos = new Carrito()
+let Productos = new Producto()
+
+const Logins = new Login()
+const Chats = new Chat()
+
+app.set("view engine", "hbs")
+app.set("views", "./views/layouts")
+
+app.engine(
+	"hbs",
+	handlebars.engine({
+		extname: ".hbs",
+		defaultLayout: "",
+		layoutsDir: "",
+		partialsDir: __dirname + "/views/partials"
+	})
+)
+
+app.use(
+	session({
+		store: MongoStore.create({
+			mongoUrl:
+				"mongodb+srv://nicoferro91:nicoferro1234@cluster0.jupxsy4.mongodb.net/?retryWrites=true&w=majority",
+			mongoOptions: {
+				useNewUrlParser: true,
+				useUnifiedTopology: true
+			}
+		}),
+		secret: "secreto",
+		resave: false,
+		rolling: true,
+		cookie: {
+			htppOnly: false,
+			secure: false,
+			maxAge: 90000
+		},
+		rolling: true,
+		resave: true,
+		saveUninitialized: false
+	})
+);
+
+// Passport
+app.use(passport.initialize())
+app.use(passport.session())
+
+// página de inicio, no dejar si no está logeado
+app.get("/", checkAuthentication, async (req, res) => {
+	const productos = await Productos.getAll()
+	res.render("index", { productos })
+});
+
+// Login
+app.get("/login", (req, res) => {
+	if (req.isAuthenticated()) {
+		let user = req.user
+		console.log("usuario logueado")
+		res.render("index")
+	} else {
+		console.log("user no logueado")
+		res.render("login")
+	}
 })
 
-app.listen(PORT, () =>{
-    console.log("servidor en puerto 8080")
+app.post(
+	"/login",
+	passport.authenticate("login", {
+		successRedirect: "/",
+		failureRedirect: "loginFail"
+	}),
+
+	(req, res) => {
+		const { user } = req.user
+		res.redirect("/")
+	}
+)
+
+
+// Registro
+app.get("/register", (req, res) => {
+	res.render("register")
+});
+
+app.post(
+	"/register",
+	passport.authenticate("register", {
+		failureRedirect: "registerFail",
+		successRedirect: "/login"
+	}),
+	(req, res) => {
+		const user = req.user
+		res.redirect("/")
+	}
+)
+
+// Error de registro
+app.get("/registerFail", (req, res) => {
+	console.error("Error de registro")
+	res.render("registerFail")
+});
+
+// Error de login
+app.get("/loginFail", (req, res) => {
+	console.error("Error de login")
+	res.render("loginFail")
+});
+
+// Logout
+app.get("/logout", async (req, res) => {
+	req.logOut()
+	res.render("index")
 })
 
-// Devolver todos los productos
-routerProductos.get("/", async (req,res)=>{
-    const contenedor = new Productos("./data/productos.json")
-    const respuesta = await contenedor.getAll()
-    res.json({respuesta})
-})
+// Ruta inexistente ------ tengo que arreglar esto
 
-// Devolver un producto por id
-routerProductos.get("/:id", async (req,res)=>{
-    let {id} = req.params
-    id = parseInt(id.slice(1))
-    const contenedor = new Productos("./data/productos.json")
-    const respuesta = await contenedor.getById(id)
-    res.json({respuesta})
-})
+// app.use("/api/*", (req, res) => {
+// 	res.json({
+// 		error: -2,
+// 		descripcion: `ruta '${req.path}' método '${req.method}' no implementada`
+// 	})
+// })
 
-// Actualizar un producto por id
-routerProductos.put("/:id", async(req, res)=>{
-    let {id} = req.params
-    id = id.slice(1)
-    id = parseInt(id)
-    const objProducto = req.body
-    const contenedor = new Productos("./data/productos.json")
-    const respuesta = await contenedor.updateById(objProducto, id, admin)
-    res.json({respuesta})
-} )
+// Info
+app.get("/info", (req, res) => {
+	const arguments = argv.slice(2).join(" || ");
 
-// Agregar un producto
-routerProductos.post("/", async (req, res)=>{
-    const contenedor = new Productos("./data/productos.json")
-    const objProducto = req.body
-    const respuesta = await contenedor.save(objProducto, admin)
-    res.json({respuesta})
-})
-
-// Borrar un producto por id
-routerProductos.delete("/:id", async (req,res)=>{
-    let {id} = req.params
-    id = id.slice(1)
-    id = parseInt(id)
-    const contenedor = new Productos("./data/productos.json")
-    const respuesta = await contenedor.deleteById(id, admin)
-    res.json({respuesta})
-})
-
-// 404 en productos
-routerProductos.get("*", async (req,res)=>{
-    res.json({
-		error: -2,
-		description: "Ruta no implementada"
+	res.render("info", {
+		execArgv: arguments.length ? arguments : "Ninguno",
+		platform,
+		version,
+		memoryUsage: memoryUsage().rss,
+		cwd: cwd(),
+		pid,
+		execPath
 	});
+});
+
+// Numeros aleatorios
+app.get("/api/randoms", (req, res) => {
+	let { cant } = req.query
+	console.log(cant)
+	const random = fork("./utils/calculo", [cant])
+	random.send("start")
+	random.on("message", obj => {
+		res.json(obj)
+	})
 })
 
-// ---- Carrito: ---- //
-// Crear carrito y devolver su id
-routerCarrito.post("/", async (req, res)=>{
-    const carrito = new Carrito("./data/carritos.json")
-    const respuesta = await carrito.createCart()
-    res.json({respuesta})
-})
-
-// Borrar carrito por id
-routerCarrito.delete("/:id", async (req, res)=>{
-    let {id} = req.params
-    id = id.slice(1)
-    id = parseInt(id)
-    const carrito = new Carrito("./data/carritos.json")
-    const respuesta = await carrito.deleteCart(id)
-    res.json({respuesta})
-})
-
-// Agregar producto al carrito segun id de producto
-routerCarrito.post("/:id/productos/:id_prod", async (req, res)=>{
-    const url = req.params
-    const idCart = parseInt(url.id.slice(1))
-    const idProd = parseInt(url.id_prod.slice(1))
-    const carrito = new Carrito("./data/carritos.json")
-    const respuesta = await carrito.addToCart(idCart, idProd)
-    res.json({respuesta})
-})
-
-// Borrar un producto del carrito usando ambos id's
-routerCarrito.delete("/:id/productos/:id_prod", async (req, res)=>{
-    const url = req.params
-    const idCart = parseInt(url.id.slice(1))
-    const idProd = parseInt(url.id_prod.slice(1))
-    const carrito = new Carrito("./data/carritos.json")
-    const respuesta = await carrito.deleteFromCart(idCart, idProd)
-    res.json({respuesta})
-})
-
-// Listar productos en un carrito segun su id
-routerCarrito.get("/:id/productos", async (req, res)=>{
-    const url = req.params
-    const idCart = parseInt(url.id.slice(1))
-    const carrito = new Carrito("./data/carritos.json")
-    const respuesta = await carrito.listCartProducts(idCart)
-    res.json({respuesta})
-})
-
-// 404 en carrito
-routerCarrito.get("*", async (req,res)=>{
-    res.json({
-		error: -2,
-		description: "Ruta no implementada"
-	});
+httpServer.listen(PORT, () => {
+	console.log(`Server listening on ${PORT}`)
 })
