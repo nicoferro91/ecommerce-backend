@@ -1,14 +1,14 @@
-const { faker } = require("@faker-js/faker")
+const { faker } = require("@faker-js/faker");
 
 class Producto {
 	constructor(id, title, price, thumbnail) {
-		this.id = id
-		this.title = title
-		this.price = price
-		this.thumbnail = thumbnail
+		this.id = id;
+		this.title = title;
+		this.price = price;
+		this.thumbnail = thumbnail;
 	}
 }
-// Genera 5 productos random y los mete en el array de producto
+// genera 5 productos random y los mete en array producto
 generadorProductos = () => {
 	const productos = [];
 	for (let i = 0; i < 5; i++) {
@@ -17,9 +17,10 @@ generadorProductos = () => {
 			faker.commerce.productName(),
 			faker.commerce.price(100, 200, 0),
 			faker.image.imageUrl()
-		)
-		productos.push(producto)
+		);
+		productos.push(producto);
 	}
-	return productos
-}
-module.exports = { generadorProductos }
+	return productos;
+};
+
+module.exports = { generadorProductos };

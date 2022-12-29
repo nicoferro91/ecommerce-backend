@@ -1,8 +1,8 @@
 const checkAuthentication = (req, res, next) => {
 	if (req.isAuthenticated()) {
-		return next()
+		return next();
 	} else {
-		res.redirect("/login")
+		res.redirect("/login");
 	}
 };
-module.exports = checkAuthentication
+module.exports = checkAuthentication;
