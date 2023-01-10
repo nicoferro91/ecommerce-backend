@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const logger = require("../logs/loggers");
 
 const UserContainer = require("../daos/login/LoginDaoMongoDB.js");
 const User = new UserContainer();
@@ -16,12 +17,12 @@ const createHash = password => {
 
 // ----------------- Serializers ----------------------
 passport.serializeUser((user, done) => {
-	console.log("serializing...");
+	logger.log("serializing...");
 	done(null, user);
 });
 
 passport.deserializeUser((id, done) => {
-	console.log("deserializing...");
+	logger.log("deserializing...");
 	const user = User.getById(id);
 	done(null, user);
 });
@@ -34,12 +35,12 @@ passport.use(
 			const user = await User.getByUser(username);
 
 			if (!user) {
-				console.error(`Usuario ${username} no encontrado`);
+				logger.error(`Usuario ${username} no encontrado`);
 				return done(null, false, { message: "Usuario no encontrado" });
 			}
 			// Validación de contraseña
 			if (!isValidPassword(user, password)) {
-				console.error("Contraseña incorrecta");
+				logger.error("Contraseña incorrecta");
 				return done(null, false, { message: "Contraseña incorrecta" });
 			}
 			done(null, user);
@@ -62,12 +63,16 @@ passport.use(
 				let user = await User.getByUser(username);
 
 				if (user) {
-					console.log(`El usuario ${username} ya existe`);
+					logger.error(`El usuario ${username} ya existe`);
 					return done(null, false, { message: "user ya existe" });
 				} else {
 					const newUser = {
 						username: username,
-						password: createHash(password)
+						password: createHash(password),
+						fullName: req.body.fullName,
+						age: req.body.age,
+						phone: req.body.phone,
+						address: req.body.address
 					};
 					await User.save(newUser);
 

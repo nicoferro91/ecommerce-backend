@@ -15,9 +15,9 @@ class ContenedorMongoDB {
 		try {
 			let guardar = new this.modelo(obj);
 			await guardar.save();
+			return guardar._id;
 		} catch (error) {
 			console.log(`error al guardar: ${error}`);
-		} finally {
 		}
 	}
 
@@ -29,7 +29,6 @@ class ContenedorMongoDB {
 			return newDatos;
 		} catch (error) {
 			return `No se pudo traer producto ${id}. ${error}`;
-		} finally {
 		}
 	}
 

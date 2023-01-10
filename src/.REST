@@ -1,0 +1,38 @@
+# POST http://localhost:8080/carrito/63bba1c0c73f557ac0f16aa2/productos/63bb5159f84d93cfc339e45e HTTP/1.1
+# content-type: application/json
+
+# {
+#     "quantity":4
+# }
+
+# POST http://localhost:8080/login HTTP/1.1
+# content-type: application/json
+
+# {
+#     "username": "prueba@prueba.com",
+#     "password": "1234"
+# }
+
+# POST http://localhost:8080/carrito/nico@gmail.com/productos HTTP/1.1
+# content-type: application/json
+
+# {
+#     "username": "nico@gmail.com",
+#     "address": "calle falsa 123",
+#     "products": [ {
+#         "_id": "63bb5159f84d93cfc339e45e",
+#         "description": "Zapatillas",
+#         "price": 7000,
+#         "stock": 10,
+#         "category": "calzado"
+#     }],
+
+# }
+
+
+# GET http://localhost:8080/carrito/nico@gmail.com/ HTTP/1.1
+# content-type: application/json
+
+# {
+
+# }
