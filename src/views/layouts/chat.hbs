@@ -12,21 +12,16 @@
 </head>
 
 <body>
-
     <div class="container" style="background-color:#e9ecef">
-
-
         <div class="container" style="background-color:#e9ecef">
             <br>
             <h2 style="color:blue">Centro de mensajes </h2>
-
             <form onsubmit="return addMessage(this)" class="mt-5">
                 <div class="form-group">
                     <label for="mail"></label>
                     <input required type="email" class="form-control col-6" id="mail" placeholder="Ingresa tu correo"
                         name="mail" />
                 </div>
-
                 <div class="container">
                     <div class="row">
                         <div class="col-6">
@@ -41,21 +36,15 @@
                         </div>
                     </div>
                 </div>
-
-
             </form>
             <br>
             <ul id="chat" style="list-style: none;"></ul>
             <br>
-
             <br>
         </div>
-
         {{footer}}
-
         <script>
             const server = io().connect();
-
             const render = mensajesChat => {
                 let chat = document.querySelector("#chat");
                 let html = mensajesChat.map(mens => {
@@ -67,7 +56,6 @@
                 });
                 chat.innerHTML = html.join("");
             };
-
             const addMessage = evt => {
                 const mail = document.querySelector("#mail").value;
                 let fecha = new Date().toLocaleTimeString();
@@ -76,17 +64,13 @@
                 const chatText = { mail, fecha, msg };
                 server.emit("mensaje-nuevo", chatText, id => {
                 });
-
                 return false;
             };
-
             server.on("mensaje-servidor", mensaje => {
-                // console.log("mensaje-servidor: ", mensaje);
                 render(mensaje.mensajesChat);
             });
 
         </script>
-        {{!-- boot strap --}}
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
             integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
             crossorigin="anonymous"></script>

@@ -4,7 +4,6 @@ const { Producto } = require("../daos/index.js");
 const Productos = new Producto();
 
 const getProduct = async (req, res) => {
-	// y también quiero que lea de la base de dato si hay algo
 	const productosDB = await Productos.getAll();
 	res.render("productos", {
 		titulo: "Productos",
