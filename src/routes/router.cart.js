@@ -3,6 +3,7 @@ const { Router } = express;
 const routerCarrito = Router();
 
 const {
+	getCart,
 	postCartId,
 	deleteCartId,
 	getProductsFromCart,
@@ -10,6 +11,9 @@ const {
 	deleteProductFromCart,
 	getCartByEmail
 } = require("../controllers/controller.carts");
+
+// GET carrito vacio
+routerCarrito.get("/", getCart);
 
 // --------- POST: Crea un carrito y devuelve su ID --------
 routerCarrito.post("/", postCartId);

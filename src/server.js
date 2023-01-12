@@ -21,7 +21,7 @@ const passport = require("./utils/passportMiddleware");
 // --- Routers ----
 const { routerHome } = require("./routes/router.home");
 const { routerProductos } = require("./routes/router.products");
-const { routerCarrito } = require("./routes/router.cart");
+const { routerCarrito } = require("./routes/router.cart.js");
 const { routerLogin } = require("./routes/router.login");
 const { routerProfile } = require("./routes/router.profile");
 const { routerRegister } = require("./routes/router.register");

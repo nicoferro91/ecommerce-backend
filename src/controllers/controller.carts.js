@@ -2,6 +2,14 @@ const { Carrito } = require("../daos/index.js");
 const logger = require("../logs/loggers.js");
 const Carritos = new Carrito();
 
+const getCart = async (req, res) => {
+	try {
+		res.render("carrito", { username: req.body.username });
+	} catch (error) {
+		logger.error(error);
+	}
+};
+
 const postCartId = async (req, res) => {
 	const idCart = await Carritos.save(req.body);
 	try {
@@ -67,6 +75,7 @@ const getCartByEmail = async (req, res) => {
 };
 
 module.exports = {
+	getCart,
 	postCartId,
 	deleteCartId,
 	getProductsFromCart,

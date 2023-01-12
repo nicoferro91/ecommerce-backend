@@ -10,7 +10,6 @@ const {
 
 const checkAuthentication = require("../utils/checkAuthentication");
 
-// note deja entrar si no estás loggeado
 routerChat.get("/chat", checkAuthentication, getChat);
 
 routerChat.get("/chat/:id", checkAuthentication, getChatId);

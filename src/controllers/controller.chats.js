@@ -1,7 +1,6 @@
 const { Chat } = require("../daos/index.js");
 const Chats = new Chat();
 
-// note deja entrar si no estás loggeado
 const getChat = async (req, res) => {
 	const chats = await Chats.getAll();
 	res.render("chat", { chats });
