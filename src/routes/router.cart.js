@@ -25,7 +25,7 @@ routerCarrito.delete("/:id", deleteCartId);
 routerCarrito.get("/:id/productos", getProductsFromCart);
 
 // POST guardar 1 producto en 1 carrito
-routerCarrito.post("/:id/productos/:idProd", postProductToCart);
+routerCarrito.post("/:id/productos", postProductToCart);
 
 // DELETE borra 1 producto de 1 carrito
 routerCarrito.delete("/:clientId/productos/:idProd", deleteProductFromCart);

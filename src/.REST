@@ -36,3 +36,23 @@
 # {
 
 # }
+
+# POST http://localhost:8080/carrito/ HTTP/1.1
+# content-type: application/json
+
+# {
+#     "username": "nico@gmail.com",
+#     "products":[],
+#     "address": "Calle falsa 123"
+# }
+
+POST http://localhost:8080/carrito/63c084d6451157bc656b6556/productos HTTP/1.1
+content-type: application/json
+
+{
+    "_id": "63be20908ace24218661fe53",
+    "title": "Pullover",
+    "thumbnail": "https://cdn1.iconfinder.com/data/icons/fashion-icons-1/48/pullover-128.png",
+    "price": 1000,
+    "quantity": 1
+}

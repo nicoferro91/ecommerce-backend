@@ -37,8 +37,12 @@
                             <td><a href="/productos/{{id}}"><img src="{{thumbnail}}" style="max-width: 5rem;"
                                         class="card-img-top" alt="{{title}}"></a></td>
                             <td>Quedan {{stock}} unidades </td>
-                            <td><a href="/carrito/{{clientId}}"><button type="button" class="btn btn-success">Agregar al
-                                        carrito</button></a>
+                            <td>                            <td>
+                                <form method="POST" action="/carrito/{{../this.username}}/productos/{{_id}}"><button
+                                        type="submit" class="btn btn-success">Agregar al
+                                        carrito</button>
+                                </form>
+                            </td>
                             </td>
                             {{/each}}
                         </tr>

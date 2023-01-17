@@ -21,18 +21,18 @@ class ContenedorMongoDB {
 		}
 	}
 
-	// traer producto por id
+	// traer objeto por id
 	async getById(id) {
 		try {
 			let datos = await this.modelo.findOne({ _id: id });
 			let newDatos = { ...datos._doc, id: datos._id.toString() };
 			return newDatos;
 		} catch (error) {
-			return `No se pudo traer producto ${id}. ${error}`;
+			return `No se pudo traer objeto ${id}. ${error}`;
 		}
 	}
 
-	//traer todos los productos
+	//traer todos los objetos
 	async getAll() {
 		try {
 			let datos = await this.modelo.find({});
@@ -47,7 +47,7 @@ class ContenedorMongoDB {
 		}
 	}
 
-	// eliminar producto por id
+	// eliminar objeto por id
 	async deleteById(id) {
 		try {
 			let datos = await this.modelo.deleteOne({ _id: id });

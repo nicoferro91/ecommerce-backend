@@ -8,15 +8,14 @@ const Productos = new Producto();
 
 const checkAuthentication = require("../utils/checkAuthentication");
 
-// note deja entrar si no estás loggeado
 routerHome.get("/", checkAuthentication, async (req, res) => {
 	const productos = await Productos.getAll();
-
 	res.render("index", {
 		titulo: "Productos disponibles",
 		list: productos,
 		listExist: true,
-		productos: true
+		productos: true,
+		username: req.session.passport.user.username,
 	});
 });
 
